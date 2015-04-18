@@ -9,13 +9,11 @@ var MenuLayer = cc.Layer.extend({
         var winsize = cc.director.getWinSize();
         var centerpos = cc.p(winsize.width / 2, winsize.height / 2);
 
-        //4. create a background image and set it's position at the center of the screen
+        // Create a background image and set it's position at the center of the screen
         var background = new cc.Sprite(res.MenuBackground_png);
         background.setPosition(centerpos);
         this.addChild(background);
 
-        //5.
-        // cc.MenuItemFont.setFontSize(60);
 
         var menuItemPlay = new cc.MenuItemSprite(
             new cc.Sprite(res.ButtonBlue_png), // normal state image
@@ -26,7 +24,7 @@ var MenuLayer = cc.Layer.extend({
         menu.setPosition(centerpos);
         this.addChild(menu);
         
-        var label = new cc.LabelTTF("TEXT", "Kenvector", 48);
+        var label = new cc.LabelTTF("START", "Kenvector", 36);
         label.setPosition(centerpos);
         this.addChild(label);
     },

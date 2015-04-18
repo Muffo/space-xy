@@ -55,7 +55,7 @@ var AnimationLayer = cc.Layer.extend({
         this.addChild(engineEmitter, 1);
         
         this.scheduleUpdate();
-        this.schedule(this.addMeteor, 0.8);
+        this.schedule(this.addMeteor, 1);
     },
     update:function(dt){
         ship.updateY();

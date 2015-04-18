@@ -51,11 +51,11 @@ var Meteor = cc.Sprite.extend({
     ctor:function() {
         this._super();
     
-        var seed = Math.random() * 100;
+        var seed = Math.floor(Math.random() * 100);
         if (seed < 25) {
             this.hits = 1;
             this.speedMult = 1.5;
-            if (seed % 2) 
+            if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorXS1_png);
             else 
                 this.initWithFile(res.MeteorXS2_png);
@@ -63,7 +63,7 @@ var Meteor = cc.Sprite.extend({
         else if (seed < 50) {
             this.hits = 2;
             this.speedMult = 1.25;
-            if (seed % 2) 
+            if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorS1_png);
             else 
                 this.initWithFile(res.MeteorS2_png);
@@ -71,7 +71,7 @@ var Meteor = cc.Sprite.extend({
         else if (seed < 75) {
             this.hits = 3;
             this.speedMult = 0.9;
-            if (seed % 2) 
+            if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorM1_png);
             else 
                 this.initWithFile(res.MeteorM2_png);
@@ -79,7 +79,7 @@ var Meteor = cc.Sprite.extend({
         else {
             this.hits = 4;
             this.speedMult = 0.5;
-            if (seed % 2) 
+            if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorL1_png);
             else 
                 this.initWithFile(res.MeteorL2_png);
@@ -96,8 +96,12 @@ var Meteor = cc.Sprite.extend({
         var endY = Math.random() * 320;
         var duration = (3 + Math.random() * 2) / this.speedMult;
         
-        var moveAction = cc.MoveTo.create(3, new cc.p(endX, endY));
+        var moveAction = new cc.MoveTo(duration, new cc.p(endX, endY));
         this.runAction(moveAction);
+        
+        var rotateAction = new cc.RotateBy(duration, 360);
+        this.runAction(rotateAction);
+
         this.scheduleUpdate();
     },
     update:function(dt){
