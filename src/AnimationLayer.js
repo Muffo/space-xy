@@ -52,8 +52,13 @@ var AnimationLayer = cc.Layer.extend({
         
         ship = new Ship();
         this.addChild(ship);
-        this.scheduleUpdate();
         
+        var engineEmitter = ship.createEngineEmitter();
+        this.addChild(engineEmitter, 1);
+        
+        this.scheduleUpdate();
+
+
         // this.schedule(this.addAsteroid,0.8);
     },
     update:function(dt){

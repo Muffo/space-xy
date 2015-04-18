@@ -1,48 +1,50 @@
 
 
+
+        
 var Ship = cc.Sprite.extend({
     ctor:function() {
         this._super();
         this.initWithFile(res.Ship_png);
         
         this.setRotation(90);
-        this.setScale(0.6);
-        
-        this.ySpeed = 0;
-        
+        this.setScale(0.5);
+        this.ySpeed = 0;    
         this.engineThrust = 0.15;
         this.engineOn = false;
+        this.engineEmitter = null;
         
-        this.invulnerability = 0;
-        
-        var emitter = new cc.ParticleSun();
+        this.invulnerability = 0;   
+    },
+    createEngineEmitter: function() {
+        var engineEmitter = new cc.ParticleSun();
         var emitterTexture = cc.textureCache.addImage(res.Particle_png);
-        this.addChild(emitter, 1);
-        emitter.setTexture(emitterTexture);
-        emitter.setStartSize(2);
-        emitter.setEndSize(4);
-        emitter.setGravity(new cc.p(-1000, 0));
-        this.engineEmitter = emitter;
-        
+        engineEmitter.setTexture(emitterTexture);
+        engineEmitter.setStartSize(2);
+        engineEmitter.setEndSize(4);
+        engineEmitter.setGravity(new cc.p(-1000, 0));
+        this.engineEmitter = engineEmitter;
+        return engineEmitter;
     },
     onEnter:function() {
         this.setPosition(60,260);
     },
+    
     updateY:function() {
+        var shipPosition = this.getPosition();
         if (this.engineOn){
             this.ySpeed += this.engineThrust;
-            this.engineEmitter.setPosition(this.getPosition().x,this.getPosition().y);
-            console.log(this.engineEmitter.getPosition());
+            this.engineEmitter.setPosition(shipPosition.x - 25, shipPosition.y);
         }
         else {
-            this.engineEmitter.setPosition(this.getPosition().x-250,this.getPosition().y);
+            this.engineEmitter.setPosition(shipPosition.x - 250, shipPosition.y);
         }
         
         if (this.invulnerability>0) {
             this.invulnerability--;
             this.setOpacity(255-this.getOpacity());	
         }
-        this.setPosition(this.getPosition().x,this.getPosition().y+this.ySpeed);
+        this.setPosition(shipPosition.x, shipPosition.y + this.ySpeed);
         this.ySpeed += gameGravity;
     }
 });
