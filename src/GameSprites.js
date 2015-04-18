@@ -22,7 +22,7 @@ var Ship = cc.Sprite.extend({
     },
     createEngineEmitter: function() {
         var engineEmitter = new cc.ParticleSun();
-        var emitterTexture = cc.textureCache.addImage(res.Particle_png);
+        var emitterTexture = cc.textureCache.addImage(res.EngineParticle_png);
         engineEmitter.setTexture(emitterTexture);
         engineEmitter.setStartSize(2);
         engineEmitter.setEndSize(4);
@@ -66,8 +66,11 @@ var Ship = cc.Sprite.extend({
     },
     updateShield: function() {
         if (this.invulnerability > 0) {
+            this.setOpacity(100);
             this.invulnerability--;
-            this.setOpacity(255 - this.getOpacity());	
+        }
+        else {
+            this.setOpacity(255);
         }
     },
     updateFire: function() {
@@ -88,27 +91,40 @@ var Ship = cc.Sprite.extend({
 
 
 var Fire = cc.Sprite.extend({
-    ctor:function() {
+    ctor: function() {
         this._super();
         this.initWithFile(res.Fire_png);
         this.setScale(0.6);
         this.setRotation(90);
+        
+        var smokeEmitter = new cc.ParticleSmoke();
+        var emitterTexture = cc.textureCache.addImage(res.SmokeParticle_png);
+        smokeEmitter.setTexture(emitterTexture);
+        smokeEmitter.setStartSize(0.5);
+        smokeEmitter.setEndSize(1);
+        smokeEmitter.setGravity(new cc.p(0, -25));
+        this.smokeEmitter = smokeEmitter;
     },
-    onEnter:function() {
+    onEnter: function() {
         this._super();
-        var moveAction = new cc.MoveBy(3, new cc.p(600, 0));
-        this.runAction(moveAction);
+    
+        this.smokeEmitter.setPosition(this.getPositionX() - 15, this.getPositionY());
+        
+        var moveAction = new cc.MoveBy(3, new cc.p(1000, 0));
+        this.runAction(moveAction.clone());
+        this.smokeEmitter.runAction(moveAction.clone());
+        
         this.scheduleUpdate();
     },
-    update:function(dt){
-        if (this.getPositionX() > 500){
+    update: function(dt){
+        if (this.getPositionX() > 800){
             animationLayer.removeFire(this)
         }
     }
 });
 
 var Meteor = cc.Sprite.extend({
-    ctor:function() {
+    ctor: function() {
         this._super();
     
         var seed = Math.floor(Math.random() * 100);
@@ -145,7 +161,7 @@ var Meteor = cc.Sprite.extend({
                 this.initWithFile(res.MeteorL2_png);
         }
     },
-    onEnter:function() {
+    onEnter: function() {
         this._super();
         
         var startX = 600;
@@ -164,7 +180,7 @@ var Meteor = cc.Sprite.extend({
 
         this.scheduleUpdate();
     },
-    update:function(dt){
+    update: function(dt){
         var shipBoundingBox = ship.getBoundingBox();
         var asteroidBoundingBox = this.getBoundingBox();
         if (cc.rectIntersectsRect(shipBoundingBox, asteroidBoundingBox) && ship.invulnerability==0){

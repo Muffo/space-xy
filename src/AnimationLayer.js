@@ -1,5 +1,5 @@
 var ship;
-var gameGravity = 0; //-0.05;
+var gameGravity = -0.05;
 var emitter;
 
 var AnimationLayer = cc.Layer.extend({
@@ -79,8 +79,10 @@ var AnimationLayer = cc.Layer.extend({
     },
     addFire: function(fire){
         this.addChild(fire, 1);
+        this.addChild(fire.smokeEmitter, 1);
     },
     removeFire: function(fire){
         this.removeChild(fire);
+        this.removeChild(fire.smokeEmitter);
     }
 });
