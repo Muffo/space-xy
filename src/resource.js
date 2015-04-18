@@ -12,6 +12,7 @@ var res = {
     // Game
     Ship_png : "res/SpaceShooterRedux/PNG/playerShip2_orange.png",
     Particle_png : "res/particle.png",
+    Fire_png: "res/SpaceShooterRedux/PNG/Effects/fire05.png",
     
     MeteorL1_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_big3.png",
     MeteorL2_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_big4.png",

@@ -1,5 +1,5 @@
 var ship;
-var gameGravity = -0.05;
+var gameGravity = 0; //-0.05;
 var emitter;
 
 var AnimationLayer = cc.Layer.extend({
@@ -39,12 +39,20 @@ var AnimationLayer = cc.Layer.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed:  function(keyCode, event){
-                ship.engineOn = true;
-                console.log("Key " + keyCode.toString() + " was pressed!");
+                if (keyCode === 32) {
+                    ship.fireOn = true;   
+                }
+                else {
+                    ship.engineOn = true;
+                }
             },
             onKeyReleased: function(keyCode, event){
-                ship.engineOn = false;
-                console.log("Key " + keyCode.toString() + " was released!");
+                if (keyCode === 32) {
+                    ship.fireOn = false;   
+                }
+                else {
+                    ship.engineOn = false;
+                }
             }
         }, this);    
         
@@ -57,14 +65,22 @@ var AnimationLayer = cc.Layer.extend({
         this.scheduleUpdate();
         this.schedule(this.addMeteor, 1);
     },
-    update:function(dt){
+    update: function(dt){
         ship.updateY();
+        ship.updateShield();
+        ship.updateFire();
     },
-    addMeteor:function(event){
+    addMeteor: function(event){
         var meteor = new Meteor();
         this.addChild(meteor, 1);
     },
-    removeMeteor:function(meteor){
+    removeMeteor: function(meteor){
         this.removeChild(meteor);
+    },
+    addFire: function(fire){
+        this.addChild(fire, 1);
+    },
+    removeFire: function(fire){
+        this.removeChild(fire);
     }
 });

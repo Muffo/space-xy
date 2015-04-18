@@ -15,7 +15,8 @@ var Ship = cc.Sprite.extend({
         this.life = 100;
         
         this.fireDelay = 30;
-        this.fire = this.fireDelay;
+        this.fireOn = false;
+        this.fireLoad = this.fireDelay;
 
         this.invulnerability = 0;   
     },
@@ -43,13 +44,16 @@ var Ship = cc.Sprite.extend({
         if (this.damage >= this.life) {
             console.log("GAME OVER!");   
         }
-        
-        this.fire = this.fireDelay;
-
+        this.fireLoad = this.fireDelay;
     },
     updateY:function() {
         var shipPosition = this.getPosition();
-        if (this.engineOn){
+        if (shipPosition.y < 0 || shipPosition.y > 320) {
+            this.respawn(20);
+            return;
+        }
+        
+        if (this.engineOn) {
             this.ySpeed += this.engineThrust;
             this.engineEmitter.setPosition(shipPosition.x - 25, shipPosition.y);
         }
@@ -57,28 +61,58 @@ var Ship = cc.Sprite.extend({
             this.engineEmitter.setPosition(shipPosition.x - 250, shipPosition.y);
         }
         
+        this.setPosition(shipPosition.x, shipPosition.y + this.ySpeed);
+        this.ySpeed += gameGravity;
+    },
+    updateShield: function() {
         if (this.invulnerability > 0) {
             this.invulnerability--;
             this.setOpacity(255 - this.getOpacity());	
         }
-        
-        if (shipPosition.y < 0 || shipPosition.y > 320) {
-            this.respawn(20);
+    },
+    updateFire: function() {
+        if (!this.fireOn || this.fireLoad < this.fireDelay) {
+            this.fireLoad = Math.min(this.fireLoad + 1, this.fireDelay);
             return;
         }
-        
-        this.setPosition(shipPosition.x, shipPosition.y + this.ySpeed);
-        this.ySpeed += gameGravity;
+        if (this.fireLoad === this.fireDelay) {
+            this.fireLoad = 0;
+            
+            var fire = new Fire();            
+            fire.setPosition(this.getPositionX() + 30, this.getPositionY());
+            animationLayer.addFire(fire);
+            console.log("FIRE!!!");
+        }
     }
 });
 
+
+var Fire = cc.Sprite.extend({
+    ctor:function() {
+        this._super();
+        this.initWithFile(res.Fire_png);
+        this.setScale(0.6);
+        this.setRotation(90);
+    },
+    onEnter:function() {
+        this._super();
+        var moveAction = new cc.MoveBy(3, new cc.p(600, 0));
+        this.runAction(moveAction);
+        this.scheduleUpdate();
+    },
+    update:function(dt){
+        if (this.getPositionX() > 500){
+            animationLayer.removeFire(this)
+        }
+    }
+});
 
 var Meteor = cc.Sprite.extend({
     ctor:function() {
         this._super();
     
         var seed = Math.floor(Math.random() * 100);
-        if (seed < 25) {
+        if (seed < 30) {
             this.hits = 1;
             this.speedMult = 1.5;
             if (seed % 2 == 0) 
@@ -86,7 +120,7 @@ var Meteor = cc.Sprite.extend({
             else 
                 this.initWithFile(res.MeteorXS2_png);
         }
-        else if (seed < 50) {
+        else if (seed < 65) {
             this.hits = 2;
             this.speedMult = 1.25;
             if (seed % 2 == 0) 
@@ -94,7 +128,7 @@ var Meteor = cc.Sprite.extend({
             else 
                 this.initWithFile(res.MeteorS2_png);
         }
-        else if (seed < 75) {
+        else if (seed < 85) {
             this.hits = 3;
             this.speedMult = 0.9;
             if (seed % 2 == 0) 
@@ -137,7 +171,7 @@ var Meteor = cc.Sprite.extend({
             animationLayer.removeMeteor(this);
             ship.respawn(this.hits * 3);
         }
-        if (this.getPosition().x<-50){
+        if (this.getPositionX() < -50){
             animationLayer.removeMeteor(this)
         }
     }
