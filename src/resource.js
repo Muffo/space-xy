@@ -20,7 +20,11 @@ var res = {
     MeteorS1_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_small1.png",
     MeteorS2_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_small2.png",
     MeteorXS1_png : "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_tiny1.png",
-    MeteorXS2_png : "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_tiny2.png"
+    MeteorXS2_png : "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_tiny2.png",
+    
+    Star1_png : "res/SpaceShooterRedux/PNG/Effects/star1.png",
+    Star2_png : "res/SpaceShooterRedux/PNG/Effects/star2.png",
+    Star3_png : "res/SpaceShooterRedux/PNG/Effects/star3.png",
 };
 
 // {fontName:"Kenvector", src:[{src:"res/SpaceShooterRedux/Bonus/kenvector_future.ttf", type:"truetype"}]}
