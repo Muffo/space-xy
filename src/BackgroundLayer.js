@@ -1,22 +1,21 @@
-var bg;
-var scrollSpeed = -1;
-
 var BackgroundLayer = cc.Layer.extend({
     ctor:function () {
         this._super();
         this.init();
     },
 
+    bg: null,
+    
     init:function () {
         this._super();
 
-        bg = new ScrollingBG();
-        this.addChild(bg);
+        this.bg = new ScrollingBG();
+        this.addChild(this.bg);
     
         this.scheduleUpdate();
     },
     update:function(dt){
-        bg.scroll();
+        this.bg.scroll();
     },
 });
 
@@ -29,6 +28,8 @@ var ScrollingBG = cc.Sprite.extend({
         this.setPosition(480, 160);
     },
     scroll:function(){
+        var scrollSpeed = 0.3;
+        
         this.setPositionX(this.getPositionX() - scrollSpeed);
         
         if (this.getPositionX() < 0) {

@@ -1,6 +1,3 @@
-var scrollSpeed = 1;
-var bg;
-
 var ship;
 var gameGravity = -0.05;
 var gameThrust = 0.15;
