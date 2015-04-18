@@ -9,7 +9,9 @@ var res = {
     
     Kenvector_ttf : "res/SpaceShooterRedux/Bonus/kenvector_future.ttf",
     
-    
+    // Game
+    Ship_png : "res/SpaceShooterRedux/PNG/playerShip2_orange.png",
+    Particle_png : "res/particle.png",
 };
 
 // {fontName:"Kenvector", src:[{src:"res/SpaceShooterRedux/Bonus/kenvector_future.ttf", type:"truetype"}]}

@@ -1,25 +1,45 @@
+
+
 var Ship = cc.Sprite.extend({
     ctor:function() {
         this._super();
-        this.initWithFile(res.ship_png);
+        this.initWithFile(res.Ship_png);
+        
+        this.setRotation(90);
+        this.setScale(0.6);
+        
         this.ySpeed = 0;
+        
+        this.engineThrust = 0.15;
         this.engineOn = false;
+        
         this.invulnerability = 0;
+        
+        var emitter = new cc.ParticleSun();
+        var emitterTexture = cc.textureCache.addImage(res.Particle_png);
+        this.addChild(emitter, 1);
+        emitter.setTexture(emitterTexture);
+        emitter.setStartSize(2);
+        emitter.setEndSize(4);
+        emitter.setGravity(new cc.p(-1000, 0));
+        this.engineEmitter = emitter;
+        
     },
     onEnter:function() {
         this.setPosition(60,260);
     },
     updateY:function() {
-        if(this.engineOn){
-            this.ySpeed += gameThrust;
-            emitter.setPosition(this.getPosition().x-25,this.getPosition().y);
+        if (this.engineOn){
+            this.ySpeed += this.engineThrust;
+            this.engineEmitter.setPosition(this.getPosition().x,this.getPosition().y);
+            console.log(this.engineEmitter.getPosition());
         }
-        else{
-            emitter.setPosition(this.getPosition().x-250,this.getPosition().y);
+        else {
+            this.engineEmitter.setPosition(this.getPosition().x-250,this.getPosition().y);
         }
         
-        if(this.invulnerability>0) {
-            this.invulnerability --;
+        if (this.invulnerability>0) {
+            this.invulnerability--;
             this.setOpacity(255-this.getOpacity());	
         }
         this.setPosition(this.getPosition().x,this.getPosition().y+this.ySpeed);
