@@ -12,6 +12,15 @@ var res = {
     // Game
     Ship_png : "res/SpaceShooterRedux/PNG/playerShip2_orange.png",
     Particle_png : "res/particle.png",
+    
+    MeteorL1_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_big3.png",
+    MeteorL2_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_big4.png",
+    MeteorM1_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_med1.png",
+    MeteorM2_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_med3.png",
+    MeteorS1_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_small1.png",
+    MeteorS2_png :  "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_small2.png",
+    MeteorXS1_png : "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_tiny1.png",
+    MeteorXS2_png : "res/SpaceShooterRedux/PNG/Meteors/meteorBrown_tiny2.png"
 };
 
 // {fontName:"Kenvector", src:[{src:"res/SpaceShooterRedux/Bonus/kenvector_future.ttf", type:"truetype"}]}

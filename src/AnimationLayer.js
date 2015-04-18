@@ -26,7 +26,6 @@ var AnimationLayer = cc.Layer.extend({
             swallowTouches: true,
             onTouchBegan: function (touch, event) {
                 ship.engineOn = true;
-                console.log("ON");
                 return true;
             },
             onTouchMoved: function (touch, event) {
@@ -34,7 +33,6 @@ var AnimationLayer = cc.Layer.extend({
             },
             onTouchEnded: function (touch, event) {
                 ship.engineOn = false;
-                console.log("OFF");
             },
         }, this);
         
@@ -57,40 +55,16 @@ var AnimationLayer = cc.Layer.extend({
         this.addChild(engineEmitter, 1);
         
         this.scheduleUpdate();
-
-
-        // this.schedule(this.addAsteroid,0.8);
+        this.schedule(this.addMeteor, 0.8);
     },
     update:function(dt){
         ship.updateY();
     },
-    addAsteroid:function(event){
-        var asteroid = new Asteroid();
-        this.addChild(asteroid,1);
+    addMeteor:function(event){
+        var meteor = new Meteor();
+        this.addChild(meteor, 1);
     },
-    removeAsteroid:function(asteroid){
-        this.removeChild(asteroid);
+    removeMeteor:function(meteor){
+        this.removeChild(meteor);
     }
 });
-
-//var listener = cc.EventListener.create({
-//    event: cc.EventListener.MOUSE,
-//    swallowTouches: true,
-//    onMouseDown: function (event) {
-//        console.log(event);
-//        console.log("Mouse Down detected, Key: " + event.getButton())
-//        var target = event.getCurrentTarget();
-//        var location =  target.convertToNodeSpace(event.getLocation());
-//        var targetSize = target.getContentSize();
-//        var targetRectangle = cc.rect(0, 0, targetSize.width, targetSize.height);
-//        if (cc.rectContainsPoint(targetRectangle, location)) {
-//            console.log("I touched the runner!!");
-//            var newPos = cc.pAdd({x: 5, y: 0}, target.getPosition());
-//            if (event.getButton() === 0) {
-//                newPos = cc.pAdd({x: -5, y: 0}, target.getPosition());
-//            }                
-//            target.setPosition(newPos);
-//        }
-//    }
-//})
-

@@ -1,7 +1,4 @@
-
-
-
-        
+    
 var Ship = cc.Sprite.extend({
     ctor:function() {
         this._super();
@@ -50,27 +47,69 @@ var Ship = cc.Sprite.extend({
 });
 
 
-var Asteroid = cc.Sprite.extend({
+var Meteor = cc.Sprite.extend({
     ctor:function() {
         this._super();
-        this.initWithFile(res.asteroid_png);
+    
+        var seed = Math.random() * 100;
+        if (seed < 25) {
+            this.hits = 1;
+            this.speedMult = 1.5;
+            if (seed % 2) 
+                this.initWithFile(res.MeteorXS1_png);
+            else 
+                this.initWithFile(res.MeteorXS2_png);
+        }
+        else if (seed < 50) {
+            this.hits = 2;
+            this.speedMult = 1.25;
+            if (seed % 2) 
+                this.initWithFile(res.MeteorS1_png);
+            else 
+                this.initWithFile(res.MeteorS2_png);
+        }
+        else if (seed < 75) {
+            this.hits = 3;
+            this.speedMult = 0.9;
+            if (seed % 2) 
+                this.initWithFile(res.MeteorM1_png);
+            else 
+                this.initWithFile(res.MeteorM2_png);
+        }
+        else {
+            this.hits = 4;
+            this.speedMult = 0.5;
+            if (seed % 2) 
+                this.initWithFile(res.MeteorL1_png);
+            else 
+                this.initWithFile(res.MeteorL2_png);
+        }
     },
     onEnter:function() {
         this._super();
-        this.setPosition(600,Math.random()*320);
-        var moveAction = cc.MoveTo.create(3, new cc.p(-100,Math.random()*320));
+        
+        var startX = 600;
+        var startY = Math.random() * 320;
+        this.setPosition(startX, startY);
+        
+        var endX = -100;
+        var endY = Math.random() * 320;
+        var duration = (3 + Math.random() * 2) / this.speedMult;
+        
+        var moveAction = cc.MoveTo.create(3, new cc.p(endX, endY));
         this.runAction(moveAction);
         this.scheduleUpdate();
     },
     update:function(dt){
         var shipBoundingBox = ship.getBoundingBox();
         var asteroidBoundingBox = this.getBoundingBox();
-        if(cc.rectIntersectsRect(shipBoundingBox, asteroidBoundingBox) && ship.invulnerability==0){
-            gameLayer.removeAsteroid(this);
-            restartGame();
+        if (cc.rectIntersectsRect(shipBoundingBox, asteroidBoundingBox) && ship.invulnerability==0){
+            animationLayer.removeMeteor(this);
+            // restartGame();
+            console.log("Died!!!");
         }
-        if(this.getPosition().x<-50){
-            gameLayer.removeAsteroid(this)
+        if (this.getPosition().x<-50){
+            animationLayer.removeMeteor(this)
         }
     }
 });
