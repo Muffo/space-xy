@@ -3,14 +3,20 @@ var Ship = cc.Sprite.extend({
     ctor:function() {
         this._super();
         this.initWithFile(res.Ship_png);
-        
         this.setRotation(90);
         this.setScale(0.5);
+        
         this.ySpeed = 0;    
         this.engineThrust = 0.15;
         this.engineOn = false;
         this.engineEmitter = null;
+
+        this.damage = 0;
+        this.life = 100;
         
+        this.fireDelay = 30;
+        this.fire = this.fireDelay;
+
         this.invulnerability = 0;   
     },
     createEngineEmitter: function() {
@@ -23,10 +29,24 @@ var Ship = cc.Sprite.extend({
         this.engineEmitter = engineEmitter;
         return engineEmitter;
     },
-    onEnter:function() {
-        this.setPosition(60,260);
+    onEnter: function() {
+        this.respawn(0);
     },
-    
+    respawn: function(damage) {
+        this.setPosition(60, 200);
+        this.invulnerability = 60;
+        this.ySpeed = 0;
+        this.damage += damage;
+        
+        console.log("Damage: " +  this.damage + " / " + this.life); 
+        
+        if (this.damage >= this.life) {
+            console.log("GAME OVER!");   
+        }
+        
+        this.fire = this.fireDelay;
+
+    },
     updateY:function() {
         var shipPosition = this.getPosition();
         if (this.engineOn){
@@ -37,10 +57,16 @@ var Ship = cc.Sprite.extend({
             this.engineEmitter.setPosition(shipPosition.x - 250, shipPosition.y);
         }
         
-        if (this.invulnerability>0) {
+        if (this.invulnerability > 0) {
             this.invulnerability--;
-            this.setOpacity(255-this.getOpacity());	
+            this.setOpacity(255 - this.getOpacity());	
         }
+        
+        if (shipPosition.y < 0 || shipPosition.y > 320) {
+            this.respawn(20);
+            return;
+        }
+        
         this.setPosition(shipPosition.x, shipPosition.y + this.ySpeed);
         this.ySpeed += gameGravity;
     }
@@ -109,8 +135,7 @@ var Meteor = cc.Sprite.extend({
         var asteroidBoundingBox = this.getBoundingBox();
         if (cc.rectIntersectsRect(shipBoundingBox, asteroidBoundingBox) && ship.invulnerability==0){
             animationLayer.removeMeteor(this);
-            // restartGame();
-            console.log("Died!!!");
+            ship.respawn(this.hits * 3);
         }
         if (this.getPosition().x<-50){
             animationLayer.removeMeteor(this)
