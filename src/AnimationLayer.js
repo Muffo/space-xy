@@ -25,7 +25,7 @@ var AnimationLayer = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                if (touch.getLocationX() < 240) {
+                if (touch.getLocationX() > 240) {
                     ship.engineOn = true;
                 }
                 else {
@@ -34,7 +34,7 @@ var AnimationLayer = cc.Layer.extend({
                 return true;
             },
             onTouchEnded: function (touch, event) {
-                if (touch.getLocationX() < 240) {
+                if (touch.getLocationX() > 240) {
                     ship.engineOn = false;
                 }
                 else {
