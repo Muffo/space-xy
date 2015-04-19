@@ -208,7 +208,7 @@ var Meteor = cc.Sprite.extend({
                     animationLayer.removeFire(fire);
                     this.hits--;
                     if (this.hits <= 0) {
-                        // statusLayer.increaseScore(this.points);
+                        statusLayer.increaseScore(this.points);
                         animationLayer.removeMeteor(this);
                     }
                 }
@@ -220,7 +220,7 @@ var Meteor = cc.Sprite.extend({
         var shipBoBox = ship.getBoundingBox();
         if (cc.rectIntersectsRect(shipBoBox, meteorBoBox) && ship.invulnerability == 0) {
             animationLayer.removeMeteor(this);
-            ship.respawn(this.hits * 3);
+            ship.respawn(this.points);
         }
         
         // Check if outside the screen

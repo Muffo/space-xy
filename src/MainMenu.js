@@ -24,13 +24,13 @@ var MenuLayer = cc.Layer.extend({
         menu.setPosition(centerpos);
         this.addChild(menu);
         
-        var label = new cc.LabelTTF("START", "Kenvector", 36);
-        label.setPosition(centerpos);
-        this.addChild(label);
+        var labelStart = new cc.LabelTTF("START", "Helvetica", 30);
+        labelStart.setColor(cc.color(0, 0, 0));
+        labelStart.setPosition(centerpos);
+        this.addChild(labelStart);
     },
 
     onPlay : function(){
-        cc.log("Play!");
         cc.director.runScene(new PlayScene());
     }
 });    

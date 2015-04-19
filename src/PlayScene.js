@@ -8,10 +8,10 @@ var PlayScene = cc.Scene.extend({
 
         backgroundLayer = new BackgroundLayer();
         animationLayer = new AnimationLayer();
-//        statusLayer = new StatusLayer();
+        statusLayer = new StatusLayer();
         
         this.addChild(backgroundLayer);
         this.addChild(animationLayer);
-//        this.addChild(statusLayer);
+        this.addChild(statusLayer);
     }
 });
