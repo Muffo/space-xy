@@ -53,7 +53,7 @@ cc.game.onStart = function(){
 
     // Disable automatic full screen
     // TODO: remove this before compiling android
-    cc.view.enableAutoFullScreen(false);
+    // cc.view.enableAutoFullScreen(false);
     
     // Pass true to enable retina display, disabled by default to improve performance
     cc.view.enableRetina(false);
