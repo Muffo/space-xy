@@ -5,37 +5,38 @@ var FinalScoreLayer = cc.Layer.extend({
     init: function(){
         this._super();
         
-        var winsize = cc.director.getWinSize();
-        var centerpos = cc.p(winsize.width / 2, winsize.height / 2);
+        var winSize = cc.director.getWinSize();
+        var centerPos = cc.p(winSize.width / 2, winSize.height / 2);
 
         // Create a background image and set it's position at the center of the screen
-        var background = new cc.Sprite(res.MenuBackground_png);
-        background.setPosition(centerpos);
+        var background = new cc.Sprite(res.MainScreen_png);
+        background.setPosition(centerPos);
         this.addChild(background);
 
-        var menuItemPlay = new cc.MenuItemSprite(
+        var menuItemStart = new cc.MenuItemSprite(
             new cc.Sprite(res.ButtonBlue_png), // normal state image
             new cc.Sprite(res.ButtonGreen_png), // select state image
-            this.onPlay, this);
-       
-        var menu = new cc.Menu(menuItemPlay);
-        menu.setPosition(centerpos);
-        this.addChild(menu);
+            this.onStart, this);
         
-        var labelStart = new cc.LabelTTF("Play again", "Helvetica", 30);
+        var menuStartPos = new cc.p(centerPos.x, centerPos.y - 70)
+        var menuStart = new cc.Menu(menuItemStart);
+        menuStart.setPosition(menuStartPos);
+        this.addChild(menuStart);
+        
+        var labelStart = new cc.LabelTTF("Play again", "Helvetica", 26);
         labelStart.setColor(cc.color(0, 0, 0));
-        labelStart.setPosition(centerpos);
+        labelStart.setPosition(menuStartPos);
         this.addChild(labelStart);
         
         
-        var labelStart = new cc.LabelTTF("Score: " + statusLayer.getScore(), "Helvetica", 30);
-        labelStart.setColor(cc.color(255, 255, 255));
-        labelStart.setPosition(new cc.p(centerpos.x, centerpos.y + 80));
-        this.addChild(labelStart);
+        var labelScore = new cc.LabelTTF("Final Score: " + statusLayer.getScore(), "Helvetica", 30);
+        labelScore.setColor(cc.color(255, 255, 255));
+        labelScore.setPosition(centerPos.x, centerPos.y - 10);
+        this.addChild(labelScore);
         
     },
 
-    onPlay : function(){
+    onStart : function(){
         cc.director.runScene(new PlayScene());
     }
 });    

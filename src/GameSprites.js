@@ -238,8 +238,8 @@ var Meteor = cc.Sprite.extend({
                         explosion.initWithTotalParticles(this.diameter);
                         var texture = cc.textureCache.addImage(res.MeteorXS2_png);
                         explosion.setTexture(texture);
-                        explosion.setStartSize(2);
-                        explosion.setEndSize(3);
+                        explosion.setStartSize(3);
+                        explosion.setEndSize(4);
                         explosion.setPosition(meteorPos);
                         explosion.setStartColor(cc.color(153, 112, 85, 255));
                         explosion.setStartColorVar(cc.color(5, 5, 5, 0));

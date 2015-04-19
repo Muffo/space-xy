@@ -1,13 +1,13 @@
 var res = {
     MenuBackground_png : "res/SpaceShooterRedux/Backgrounds/blue_480x320.png",
-        
     GameBackground_png : "res/SpaceShooterRedux/Backgrounds/purple_960x320.png",
         
     // UI
+    MainScreen_png : "res/mainScreen.png",
     ButtonBlue_png : "res/SpaceShooterRedux/PNG/UI/buttonBlue.png",
     ButtonGreen_png : "res/SpaceShooterRedux/PNG/UI/buttonGreen.png",
     
-    Kenvector_ttf : "res/SpaceShooterRedux/Bonus/kenvector_future.ttf",
+    // Kenvector_ttf : "res/SpaceShooterRedux/Bonus/kenvector_future.ttf",
     
     // Game
     Ship_png : "res/SpaceShooterRedux/PNG/playerShip2_orange.png",
