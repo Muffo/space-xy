@@ -1,8 +1,8 @@
-var MenuLayer = cc.Layer.extend({
-    ctor : function(){
+var FinalScoreLayer = cc.Layer.extend({
+    ctor: function(){
         this._super();
     },
-    init:function(){
+    init: function(){
         this._super();
         
         var winsize = cc.director.getWinSize();
@@ -13,7 +13,6 @@ var MenuLayer = cc.Layer.extend({
         background.setPosition(centerpos);
         this.addChild(background);
 
-
         var menuItemPlay = new cc.MenuItemSprite(
             new cc.Sprite(res.ButtonBlue_png), // normal state image
             new cc.Sprite(res.ButtonGreen_png), // select state image
@@ -23,10 +22,17 @@ var MenuLayer = cc.Layer.extend({
         menu.setPosition(centerpos);
         this.addChild(menu);
         
-        var labelStart = new cc.LabelTTF("START", "Helvetica", 30);
+        var labelStart = new cc.LabelTTF("Play again", "Helvetica", 30);
         labelStart.setColor(cc.color(0, 0, 0));
         labelStart.setPosition(centerpos);
         this.addChild(labelStart);
+        
+        
+        var labelStart = new cc.LabelTTF("Score: " + statusLayer.getScore(), "Helvetica", 30);
+        labelStart.setColor(cc.color(255, 255, 255));
+        labelStart.setPosition(new cc.p(centerpos.x, centerpos.y + 80));
+        this.addChild(labelStart);
+        
     },
 
     onPlay : function(){
@@ -34,10 +40,10 @@ var MenuLayer = cc.Layer.extend({
     }
 });    
 
-var MainMenuScene = cc.Scene.extend({
+var FinalScoreScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
-        var layer = new MenuLayer();
+        var layer = new FinalScoreLayer();
         layer.init();
         this.addChild(layer);
     }

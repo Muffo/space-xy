@@ -42,7 +42,7 @@ var Ship = cc.Sprite.extend({
         console.log("Damage: " +  this.damage + " / " + this.life); 
         
         if (this.damage >= this.life) {
-            console.log("GAME OVER!");   
+            cc.director.runScene(new FinalScoreScene());
         }
         this.fireLoad = this.fireDelay;
     },
