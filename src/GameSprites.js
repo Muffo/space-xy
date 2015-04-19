@@ -81,10 +81,9 @@ var Ship = cc.Sprite.extend({
         if (this.fireLoad === this.fireDelay) {
             this.fireLoad = 0;
             
-            var fire = new Fire();            
+            var fire = new Fire();
             fire.setPosition(this.getPositionX() + 30, this.getPositionY());
             animationLayer.addFire(fire);
-            console.log("FIRE!!!");
         }
     }
 });
@@ -104,6 +103,8 @@ var Fire = cc.Sprite.extend({
         smokeEmitter.setEndSize(1);
         smokeEmitter.setGravity(new cc.p(0, -25));
         this.smokeEmitter = smokeEmitter;
+        
+        this.isFire = true;
     },
     onEnter: function() {
         this._super();
@@ -130,6 +131,7 @@ var Meteor = cc.Sprite.extend({
         var seed = Math.floor(Math.random() * 100);
         if (seed < 30) {
             this.hits = 1;
+            this.points = 5;
             this.speedMult = 1.5;
             if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorXS1_png);
@@ -138,6 +140,7 @@ var Meteor = cc.Sprite.extend({
         }
         else if (seed < 65) {
             this.hits = 2;
+            this.points = 10;
             this.speedMult = 1.25;
             if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorS1_png);
@@ -145,7 +148,8 @@ var Meteor = cc.Sprite.extend({
                 this.initWithFile(res.MeteorS2_png);
         }
         else if (seed < 85) {
-            this.hits = 3;
+            this.hits = 2;
+            this.points = 15;
             this.speedMult = 0.9;
             if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorM1_png);
@@ -154,12 +158,19 @@ var Meteor = cc.Sprite.extend({
         }
         else {
             this.hits = 4;
+            this.points = 25;
             this.speedMult = 0.5;
             if (seed % 2 == 0) 
                 this.initWithFile(res.MeteorL1_png);
             else 
                 this.initWithFile(res.MeteorL2_png);
         }
+        
+        // Give a little advantage on the small targets
+        this.boBox = this.getBoundingBox();
+        this.diameter = Math.min(this.boBox.height, this.boBox.width) * 0.8;
+        this.diameter = Math.min(this.diameter, 75);
+        this.diameter = Math.max(this.diameter, 20);
     },
     onEnter: function() {
         this._super();
@@ -181,14 +192,40 @@ var Meteor = cc.Sprite.extend({
         this.scheduleUpdate();
     },
     update: function(dt){
-        var shipBoundingBox = ship.getBoundingBox();
-        var asteroidBoundingBox = this.getBoundingBox();
-        if (cc.rectIntersectsRect(shipBoundingBox, asteroidBoundingBox) && ship.invulnerability==0){
+        
+        // Check collision with fires
+        var allChildren = animationLayer.getChildren();
+        for(var i = 0; i< allChildren.length; i++) {
+            if (allChildren[i].isFire) {
+                var fire = allChildren[i];
+                firePos = fire.getPosition();
+                meteorPos = this.getPosition();
+                
+                var dist = Math.sqrt(Math.pow(firePos.x - meteorPos.x, 2) + 
+                                     Math.pow(firePos.y - meteorPos.y, 2))
+                
+                if (dist < this.diameter) {
+                    animationLayer.removeFire(fire);
+                    this.hits--;
+                    if (this.hits <= 0) {
+                        // statusLayer.increaseScore(this.points);
+                        animationLayer.removeMeteor(this);
+                    }
+                }
+            }
+        }      
+        
+        // Check collision with ship
+        var meteorBoBox = this.getBoundingBox();
+        var shipBoBox = ship.getBoundingBox();
+        if (cc.rectIntersectsRect(shipBoBox, meteorBoBox) && ship.invulnerability == 0) {
             animationLayer.removeMeteor(this);
             ship.respawn(this.hits * 3);
         }
+        
+        // Check if outside the screen
         if (this.getPositionX() < -50){
-            animationLayer.removeMeteor(this)
+            animationLayer.removeMeteor(this);
         }
     }
 });
