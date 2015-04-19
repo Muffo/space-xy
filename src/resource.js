@@ -27,6 +27,13 @@ var res = {
     Star1_png : "res/SpaceShooterRedux/PNG/Effects/star1.png",
     Star2_png : "res/SpaceShooterRedux/PNG/Effects/star2.png",
     Star3_png : "res/SpaceShooterRedux/PNG/Effects/star3.png",
+    
+    // Sounds
+    Fire_ogg : "res/SpaceShooterRedux/Bonus/sfx_laser1.ogg",
+    Lose_ogg : "res/SpaceShooterRedux/Bonus/sfx_lose.ogg",
+    ShieldDown_ogg : "res/SpaceShooterRedux/Bonus/sfx_shieldDown.ogg",
+    Explosion1_ogg : "res/Explosion1.ogg",
+    Explosion2_ogg : "res/Explosion2.ogg",
 };
 
 // {fontName:"Kenvector", src:[{src:"res/SpaceShooterRedux/Bonus/kenvector_future.ttf", type:"truetype"}]}

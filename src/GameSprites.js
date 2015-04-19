@@ -36,12 +36,15 @@ var Ship = cc.Sprite.extend({
         this.invulnerability = 60;
         this.ySpeed = 0;
         this.damage += damage;
-        
-        console.log("Damage: " +  this.damage + " / " + this.life); 
-        
+                
         if (this.damage >= this.life) {
+            cc.audioEngine.playEffect(res.Lose_ogg);
             cc.director.runScene(new FinalScoreScene());
         }
+        else if (damage > 0) {
+            cc.audioEngine.playEffect(res.ShieldDown_ogg);
+        }
+        
         this.fireLoad = this.fireDelay;
     },
     updateY:function() {
@@ -78,10 +81,11 @@ var Ship = cc.Sprite.extend({
         }
         if (this.fireLoad === this.fireDelay) {
             this.fireLoad = 0;
-            
+
             var fire = new Fire();
             fire.setPosition(this.getPositionX() + 30, this.getPositionY());
             animationLayer.addFire(fire);
+            cc.audioEngine.playEffect(res.Fire_ogg);
         }
     }
 });
@@ -251,7 +255,13 @@ var Meteor = cc.Sprite.extend({
                         explosion.setSpeedVar(10);
                         explosion.setGravity(new cc.p(30, 0));
                         animationLayer.addExplosion(explosion);
-
+                        
+                        if (this.diameter < 40) {
+                            cc.audioEngine.playEffect(res.Explosion2_ogg);
+                        }
+                        else {
+                            cc.audioEngine.playEffect(res.Explosion1_ogg);
+                        }
                         animationLayer.removeMeteor(this);
                     }
                 }
