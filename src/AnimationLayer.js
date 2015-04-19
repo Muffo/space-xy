@@ -25,14 +25,21 @@ var AnimationLayer = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                ship.engineOn = true;
+                if (touch.getLocationX() < 240) {
+                    ship.engineOn = true;
+                }
+                else {
+                    ship.fireOn = true;
+                }
                 return true;
             },
-            onTouchMoved: function (touch, event) {
-                console.log("Moved");
-            },
             onTouchEnded: function (touch, event) {
-                ship.engineOn = false;
+                if (touch.getLocationX() < 240) {
+                    ship.engineOn = false;
+                }
+                else {
+                    ship.fireOn = false;
+                }
             },
         }, this);
         
@@ -40,7 +47,7 @@ var AnimationLayer = cc.Layer.extend({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed:  function(keyCode, event){
                 if (keyCode === 32) {
-                    ship.fireOn = true;   
+                    ship.fireOn = true;
                 }
                 else {
                     ship.engineOn = true;
