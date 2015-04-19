@@ -65,9 +65,7 @@ var AnimationLayer = cc.Layer.extend({
         
         ship = new Ship();
         this.addChild(ship);
-        
-        var engineEmitter = ship.createEngineEmitter();
-        this.addChild(engineEmitter, 1);
+        this.addChild(ship.engineEmitter, 1);
         
         this.scheduleUpdate();
         this.schedule(this.addMeteor, 1);
@@ -91,5 +89,8 @@ var AnimationLayer = cc.Layer.extend({
     removeFire: function(fire){
         this.removeChild(fire);
         this.removeChild(fire.smokeEmitter);
+    },
+    addExplosion: function(explosion) {
+        this.addChild(explosion);
     }
 });

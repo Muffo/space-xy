@@ -18,9 +18,8 @@ var Ship = cc.Sprite.extend({
         this.fireOn = false;
         this.fireLoad = this.fireDelay;
 
-        this.invulnerability = 0;   
-    },
-    createEngineEmitter: function() {
+        this.invulnerability = 0;
+        
         var engineEmitter = new cc.ParticleSun();
         var emitterTexture = cc.textureCache.addImage(res.EngineParticle_png);
         engineEmitter.setTexture(emitterTexture);
@@ -28,7 +27,6 @@ var Ship = cc.Sprite.extend({
         engineEmitter.setEndSize(4);
         engineEmitter.setGravity(new cc.p(-1000, 0));
         this.engineEmitter = engineEmitter;
-        return engineEmitter;
     },
     onEnter: function() {
         this.respawn(0);
@@ -169,6 +167,7 @@ var Meteor = cc.Sprite.extend({
         // Give a little advantage on the small targets
         this.boBox = this.getBoundingBox();
         this.diameter = Math.min(this.boBox.height, this.boBox.width) * 0.8;
+        this.diameter = Math.floor(this.diameter);
         this.diameter = Math.min(this.diameter, 75);
         this.diameter = Math.max(this.diameter, 20);
     },
@@ -205,10 +204,49 @@ var Meteor = cc.Sprite.extend({
                                      Math.pow(firePos.y - meteorPos.y, 2))
                 
                 if (dist < this.diameter) {
+                    // Show an explosion for the bullet
+                    var explosion = new cc.ParticleExplosion();
+                    explosion.initWithTotalParticles(30);
+                    var texture = cc.textureCache.addImage(res.SmokeParticle_png);
+                    explosion.setTexture(texture);
+                    explosion.setStartSize(2);
+                    explosion.setEndSize(3);
+                    explosion.setPosition(firePos);
+                    explosion.setStartColor(cc.color(204, 204, 204, 255));
+                    explosion.setStartColorVar(cc.color(5, 5, 5, 0));
+                    explosion.setEndColor(cc.color(100, 100, 100, 255));
+                    explosion.setEndColorVar(cc.color(5, 5, 5, 5));
+                    explosion.setLife(1);
+                    explosion.setLifeVar(0.5);
+                    explosion.setSpeed(20);
+                    explosion.setSpeedVar(10);
+                    explosion.setGravity(new cc.p(30, 0));
+                    animationLayer.addExplosion(explosion);
+                    
                     animationLayer.removeFire(fire);
                     this.hits--;
                     if (this.hits <= 0) {
                         statusLayer.increaseScore(this.points);
+                        
+                        // Show an explosion for the meteor
+                        var explosion = new cc.ParticleExplosion();
+                        explosion.initWithTotalParticles(this.diameter);
+                        var texture = cc.textureCache.addImage(res.MeteorXS2_png);
+                        explosion.setTexture(texture);
+                        explosion.setStartSize(2);
+                        explosion.setEndSize(3);
+                        explosion.setPosition(meteorPos);
+                        explosion.setStartColor(cc.color(153, 112, 85, 255));
+                        explosion.setStartColorVar(cc.color(5, 5, 5, 0));
+                        explosion.setEndColor(cc.color(153, 112, 85, 200));
+                        explosion.setEndColorVar(cc.color(30, 30, 30, 5));
+                        explosion.setLife(3);
+                        explosion.setLifeVar(0.5);
+                        explosion.setSpeed(20 * Math.sqrt(this.diameter));
+                        explosion.setSpeedVar(10);
+                        explosion.setGravity(new cc.p(30, 0));
+                        animationLayer.addExplosion(explosion);
+
                         animationLayer.removeMeteor(this);
                     }
                 }
