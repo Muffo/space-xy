@@ -190,6 +190,15 @@ var Meteor = cc.Sprite.extend({
 
         this.scheduleUpdate();
     },
+    checkCollision: function(p) {
+        meteorPos = this.getPosition();
+        
+        var dist = Math.sqrt(Math.pow(p.x - meteorPos.x, 2) + 
+                            Math.pow(p.y - meteorPos.y, 2))
+        
+        return dist < this.diameter;
+
+    },
     update: function(dt){
         
         // Check collision with fires
@@ -198,12 +207,8 @@ var Meteor = cc.Sprite.extend({
             if (allChildren[i].isFire) {
                 var fire = allChildren[i];
                 firePos = fire.getPosition();
-                meteorPos = this.getPosition();
                 
-                var dist = Math.sqrt(Math.pow(firePos.x - meteorPos.x, 2) + 
-                                     Math.pow(firePos.y - meteorPos.y, 2))
-                
-                if (dist < this.diameter) {
+                if (this.checkCollision(firePos)) {
                     // Show an explosion for the bullet
                     var explosion = new cc.ParticleExplosion();
                     explosion.initWithTotalParticles(30);
@@ -254,9 +259,18 @@ var Meteor = cc.Sprite.extend({
         }      
         
         // Check collision with ship
-        var meteorBoBox = this.getBoundingBox();
         var shipBoBox = ship.getBoundingBox();
-        if (cc.rectIntersectsRect(shipBoBox, meteorBoBox) && ship.invulnerability == 0) {
+        var shipX = ship.getPositionX();
+        var shipY = ship.getPositionY();
+
+        var shipFront = new cc.p(cc.rectGetMaxX(shipBoBox) - 5, shipY); 
+        var shipTopWing = new cc.p(shipX, cc.rectGetMaxY(shipBoBox) - 5); 
+        var shipBotWing = new cc.p(shipX, cc.rectGetMinY(shipBoBox) - 5); 
+            
+        if ((this.checkCollision(shipFront) 
+             || this.checkCollision(shipTopWing) || this.checkCollision(shipBotWing))
+                && ship.invulnerability == 0) {
+            
             animationLayer.removeMeteor(this);
             ship.respawn(this.points);
         }
